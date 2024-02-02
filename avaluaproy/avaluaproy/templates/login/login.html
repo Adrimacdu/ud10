@@ -1,0 +1,44 @@
+{% extends 'common/base.html' %}
+{% load widget_tweaks %}
+<!-- UD8.2.b -->
+{% block content %}
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <h2> {{ title }} </h2>
+        <div class="input-group mb-3">
+            {{ form.username.label_tag }}
+            {{ form.username|attr:'autocomplete:off'|attr:'placeholder:Ingrese su username' }}
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            {{ form.password.label_tag }}
+            {{ form.password|attr:'autocomplete:off'|attr:'placeholder:Ingrese su password' }}
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <!-- <div>
+                    <input type="checkbox" id="remember">
+                    <label for="remember">
+                        Remember Me
+                    </label> 
+                </div>-->
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+                <button type="submit" class="btn btn-danger">Sign In</button>
+            </div>
+            <!-- /.col -->
+        </div>
+    </form>
+</div>
+{% endblock %}

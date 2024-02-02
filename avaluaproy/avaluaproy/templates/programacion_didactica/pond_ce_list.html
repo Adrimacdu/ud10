@@ -1,0 +1,15 @@
+{% extends "common/base_intranet.html" %}
+
+<!-- UD6.8.a -->
+{% block main_content %}
+<div class="container">
+    <h1>Lista de ponderaciones de CE</h1>
+    <ul class="list-group mt-3">
+    {% for pond_ce_list in object_list %}
+        <a href="{% url 'pond_ce_detail' pond_ce_list.id %}" class="list-group-item list-group-item-action">{{ pond_ce_list }}</a>
+    {% empty %}
+        <p>No existen ponderaciones de CE.</p>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock main_content %}

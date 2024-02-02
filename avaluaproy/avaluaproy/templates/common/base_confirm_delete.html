@@ -1,0 +1,12 @@
+{% extends 'common/base.html' %}
+<!-- UD7.2.e -->
+{% block content %}
+<div class="container">
+    <h2>{{titulo}}</h2>
+    <form method="post">{% csrf_token %}
+        <p>{{mensaje_confirmacion}}</p>
+        {{forms}}
+        <input type="submit" value="confirmar" class="btn btn-danger">
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+      <div class="position-sticky pt-3">
+        <a href="{% url 'panel' %}" class="nav-link" aria-current="page">
+          <span class="text-secondary fs-4">Panel</span>
+        </a>
+        <hr>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a href="{% url 'modulo_list' %}" class="nav-link" aria-current="page">
+              <span class="text-secondary">Módulos</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'ra_list' %}" class="nav-link">
+              <span class="text-secondary">Res. aprendizaje</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'ce_list' %}" class="nav-link">
+              <span class="text-secondary">Crit. evaluación</span>
+            </a>
+          </li>
+          <hr>
+          <li>
+            <a href="#" class="nav-link">
+              <span class="text-secondary">Unidades</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link">
+              <span class="text-secondary">Inst. evaluación</span>
+            </a>
+          </li>
+            <a href="#" class="nav-link">
+              <span class="text-secondary">Ponderación RAs</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link">
+              <span class="text-secondary">Ponderación CEs</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link">
+              <span class="text-secondary">Ponderación CE/UD</span>
+            </a>
+          </li>
+          <hr>
+
+        </ul>
+      </div>
+    </nav>

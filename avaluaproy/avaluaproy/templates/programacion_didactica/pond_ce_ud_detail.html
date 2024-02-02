@@ -1,0 +1,11 @@
+{% extends "common/base_intranet.html" %}
+
+<!-- UD6.8.a -->
+{% block main_content %}
+<h1>Detalle de ponderación de CE por UD</h1>
+
+<p>
+    {{object.criterio_evaluacion}} - {{object.unidad}} - {{object.porcentaje}}
+</p>
+
+{% endblock main_content %}

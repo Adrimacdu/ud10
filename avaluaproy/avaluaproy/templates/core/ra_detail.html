@@ -1,0 +1,11 @@
+{% extends "common/base_intranet.html" %}
+
+
+{% block main_content %}
+<h1>Detalle del resultado de aprendizaje</h1>
+
+<p>
+    {{object.codigo}} - {{object.descripcion|safe}}
+</p>
+
+{% endblock main_content %}

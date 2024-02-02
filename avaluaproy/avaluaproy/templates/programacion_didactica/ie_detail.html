@@ -1,0 +1,11 @@
+{% extends "common/base_intranet.html" %}
+
+<!-- UD6.8.a -->
+{% block main_content %}
+<h1>Detalle del instrumento de evaluación</h1>
+
+<p>
+    {{object.codigo}} - {{object.nombre}} - {{object.descripcion}}
+</p>
+
+{% endblock main_content %}
