@@ -71,7 +71,7 @@ class CEListViewSet(mixins.ListModelMixin,
     search_fields = ['codigo', 'descripcion',
                     'resultado_aprendizaje_codigo',
                     'resultado_aprendizaje_descripcion',
-                    'resultado_aprendizaje_modulo__nombre']
+                    'resultado_aprendizaje__modulo_nombre']
     
     def get_queryset(self):
         modulo = self.request.query_params.get('modulo')
