@@ -6,7 +6,7 @@ from .pagination import LargeResultsSetPagination, StandardResultsSetPagination,
 from rest_framework import serializers, response, status
 from rest_framework.decorators import api_view
 
-#UD11.3.a
+#UD10.3.a
 
 class ModuloListViewSet(mixins.ListModelMixin,
                         viewsets.GenericViewSet):
@@ -76,10 +76,14 @@ class CEListViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         modulo = self.request.query_params.get('modulo')
         ra = self.request.query_params.get('res_ap')
-        if modulo and ra:
-            return CritEvaluacion.objects.filter(resultado_aprendizaje__modulo=modulo).filter(resultado_aprendizaje=ra)
+        todos = CritEvaluacion.objects.all()
+        if modulo:
+            todos = todos.filter(resultado_aprendizaje__modulo=modulo)
+        if ra:
+            todos = todos.filter(resultado_aprendizaje=ra)
         
-        return CritEvaluacion.objects.all()
+
+        return todos
 
 class CEDetailViewSet(mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
@@ -91,5 +95,3 @@ class CEDetailViewSet(mixins.CreateModelMixin,
     queryset = ResAprendizaje.objects.all()
 
 ###############################################
-    
-

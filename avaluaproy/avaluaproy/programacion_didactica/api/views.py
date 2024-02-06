@@ -6,6 +6,7 @@ from .pagination import LargeResultsSetPagination, StandardResultsSetPagination,
 from rest_framework import serializers, response, status
 from rest_framework.decorators import api_view  
 
+#UD10.3.a
 
 class UnidadListViewSet(mixins.ListModelMixin,
                         viewsets.GenericViewSet):
@@ -85,8 +86,81 @@ class PondCEListViewSet(mixins.ListModelMixin,
                     'criterio_evaluacion__resultado_aprendizaje_nombre']
     
     search_fields = ['criterio_evaluacion__resultado_aprendizaje__modulo_nombre',
-                    'criterio_evaluacion__resultado_aprendizaje__codigo']
+                    'criterio_evaluacion__resultado_aprendizaje__codigo',
+                    'criterio_evaluacion__resultado_aprendizaje_nombre',
+                    'criterio_evaluacion_codigo',
+                    'criterio_evaluacion_descripcion']
+    
     queryset = PondCriterio.objects.all()
 
-    #Ordenación: combinación de modulo.nombre +
-    #RA.codigo + CE.codigo (defecto), CE.nombre
+    def get_queryset(self):
+        modulo = self.request.query_params.get('modulo')
+        ra = self.request.query_params.get('res_ap')
+        todos = PondCriterio.objects.all()
+        if modulo:
+            todos = todos.filter(criterio_evaluacion__resultado_aprendizaje__modulo=modulo)
+        if ra:
+            todos = todos.filter(criterio_evaluacion__resultado_aprendizaje=ra)
+
+        return todos
+
+class PondCEDetailViewSet(mixins.CreateModelMixin,
+                        mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        mixins.DestroyModelMixin,
+                        viewsets.GenericViewSet):
+    
+    serializer_class = PondCEDetailSerializer
+    queryset = PondCriterio.objects.all()
+    #FALTA HACER VALIDACION UD7 - EJ2 - g
+
+class PondCEUDListViewSet(mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
+    
+    serializer_class = PondCEUDListSerializer
+    pagination_class = StandardResultsSetPagination
+    ordering = 'criterio_evaluacion__codigo' 
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+
+    ordering_fields = ['unidad__nombre',
+                    'criterio_evaluacion__resultado_aprendizaje__modulo_nombre',
+                    'criterio_evaluacion__resultado_aprendizaje_codigo',
+                    'criterio_evaluacion_codigo', 
+                    'criterio_evaluacion__resultado_aprendizaje_descripcion']
+    
+    search_fields = ['criterio_evaluacion__resultado_aprendizaje__modulo_nombre',
+                    'criterio_evaluacion__resultado_aprendizaje__codigo',
+                    'criterio_evaluacion__resultado_aprendizaje_descripcion',
+                    'criterio_evaluacion_codigo',
+                    'criterio_evaluacion_descripcion',
+                    'unidad__nombre']
+    
+    queryset = PondCritUD.objects.all()
+
+    def get_queryset(self):
+        modulo = self.request.query_params.get('modulo')
+        ra = self.request.query_params.get('res_ap')
+        ce = self.request.query_params.get('ce')
+        ud = self.request.query_params.get('ud')
+        todos = PondCritUD.objects.all()
+
+        if modulo:
+            todos = todos.filter(criterio_evaluacion__resultado_aprendizaje__modulo=modulo)
+        if ra:
+            todos = todos.filter(criterio_evaluacion__resultado_aprendizaje=ra)
+        if ce:
+            todos = todos.filter(criterio_evaluacion=ce)
+        if ud:
+            todos = todos.filter(unidad=ud)
+
+        return todos
+    
+class PondCEUDDetailViewSet(mixins.CreateModelMixin,
+                        mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        mixins.DestroyModelMixin,
+                        viewsets.GenericViewSet):
+    
+    serializer_class = PondCEUDDetailSerializer
+    queryset = PondCritUD.objects.all()
+    #FALTA HACER VALIDACION UD7 - EJ2 - g

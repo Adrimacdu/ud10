@@ -27,8 +27,14 @@ from login.views import LoginFormView, LogoutView, LogoutRedirectView
 #UD8.4
 from django.views.generic import TemplateView
 from core.api.views import ModuloListViewSet, ModuloDetailViewSet, RAListViewSet, RADetailViewSet, CEListViewSet, CEDetailViewSet
+from programacion_didactica.api.views import UnidadListViewSet, UnidadDetailViewSet, IEListViewSet, IEDetailViewSet, PondRAListViewSet, PondRADetailViewSet, PondCEListViewSet, PondCEDetailViewSet, PondCEUDListViewSet, PondCEUDDetailViewSet
+from programacion_aula.api.views import AlumnoListViewSet, AlumnoDetailViewSet, CEUDListViewSet, CEUDDetailViewSet, CalUDCEListViewSet, CalUDCEDetailViewSet, CalCEListViewSet, CalCEDetailViewSet, CalRAListViewSet, CalRADetailViewSet, CalTotalListViewSet, CalTotalDetailViewSet
 from rest_framework import routers
 
+#UD10.3.a
+#####################################
+##   API VIEWS     -       CORE    ##
+#####################################
 router = routers.DefaultRouter()
 router.register(r'modulo_list', ModuloListViewSet, basename='modulo_list')
 router.register(r'modulo_detail', ModuloDetailViewSet, basename='modulo_detail')
@@ -36,6 +42,34 @@ router.register(r'ra_list', RAListViewSet, basename='ra_list')
 router.register(r'ra_detail', RADetailViewSet, basename='ra_detail')
 router.register(r'ce_list', CEListViewSet, basename='ce_list')
 router.register(r'ce_detail', CEDetailViewSet, basename='ce_detail')
+###############################################
+##   API VIEWS     -       PROG_DIDACTICA    ##
+###############################################
+router.register(r'ud_list', UnidadListViewSet, basename='ud_list')
+router.register(r'ud_detail', UnidadDetailViewSet, basename='ud_detail')
+router.register(r'ie_list', IEListViewSet, basename='ie_list')
+router.register(r'ie_detail', IEDetailViewSet, basename='ie_detail')
+router.register(r'pond_ra_list', PondRAListViewSet, basename='pond_ra_list')
+router.register(r'pond_ra_detail', PondRADetailViewSet, basename='pond_ra_detail')
+router.register(r'pond_ce_list', PondCEListViewSet, basename='pond_ce_list')
+router.register(r'pond_ce_detail', PondCEDetailViewSet, basename='pond_ce_detail')
+router.register(r'pond_ce_ud_list', PondCEUDListViewSet, basename='pond_ce_ud_list')
+router.register(r'pond_ce_ud_detail', PondCEUDDetailViewSet, basename='pond_ce_ud_detail')
+##########################################
+##   API VIEWS     -       PROG_AULA    ##
+##########################################
+router.register(r'alu_list', AlumnoListViewSet, basename='alu_list')
+router.register(r'alu_detail', AlumnoDetailViewSet, basename='alu_detail')
+router.register(r'ce_ud_list', CEUDListViewSet, basename='ce_ud_list')
+router.register(r'ce_ud_detail', CEUDDetailViewSet, basename='ce_ud_detail')
+router.register(r'cal_ud_ce_list', CalUDCEListViewSet, basename='cal_ud_ce_list')
+router.register(r'cal_ud_ce_detail', CalUDCEDetailViewSet, basename='cal_ud_ce_detail')
+router.register(r'cal_ce_list', CalCEListViewSet, basename='cal_ce_list')
+router.register(r'cal_ce_detail', CalCEDetailViewSet, basename='cal_ce_detail')
+router.register(r'cal_ra_list', CalRAListViewSet, basename='cal_ra_list')
+router.register(r'cal_ra_detail', CalRADetailViewSet, basename='cal_ra_detail')
+router.register(r'cal_total_list', CalTotalListViewSet, basename='cal_total_list')
+router.register(r'cal_total_detail', CalTotalListViewSet, basename='cal_total_detail')
 
 # UD6.7.b
 urlpatterns = [

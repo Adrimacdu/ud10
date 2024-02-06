@@ -1,5 +1,5 @@
 from rest_framework import serializers, response, status
-from avaluaproy.programacion_aula.models import *
+from programacion_aula.models import *
 
 #UD10.2
 
