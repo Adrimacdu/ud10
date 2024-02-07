@@ -69,11 +69,11 @@ router.register(r'cal_ce_detail', CalCEDetailViewSet, basename='cal_ce_detail')
 router.register(r'cal_ra_list', CalRAListViewSet, basename='cal_ra_list')
 router.register(r'cal_ra_detail', CalRADetailViewSet, basename='cal_ra_detail')
 router.register(r'cal_total_list', CalTotalListViewSet, basename='cal_total_list')
-router.register(r'cal_total_detail', CalTotalListViewSet, basename='cal_total_detail')
+router.register(r'cal_total_detail', CalTotalDetailViewSet, basename='cal_total_detail')
 
 # UD6.7.b
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('api/', include(router.urls), name='api'),
     path('admin/', admin.site.urls),
     path('', common_views.HomeView.as_view(), name='home'),
     path('panel/', common_views.PanelView.as_view(), name='panel'),

@@ -5,12 +5,15 @@ from rest_framework.exceptions import ValidationError
 from .pagination import LargeResultsSetPagination, StandardResultsSetPagination, ShortResultsSetPagination
 from rest_framework import serializers, response, status
 from rest_framework.decorators import api_view  
-
+#UD10.3.b
+from programacion_didactica.mixins import deleteMixin_api
 #UD10.3.a
 
 class UnidadListViewSet(mixins.ListModelMixin,
                         viewsets.GenericViewSet):
-    
+    """
+    Listado de unidades
+    """    
     serializer_class = UnidadListSerializer
     pagination_class = None
     ordering = 'nombre'
@@ -19,19 +22,25 @@ class UnidadListViewSet(mixins.ListModelMixin,
     search_fields = ['nombre']
     queryset = Unidad.objects.all()
 
-class UnidadDetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
-    
+#UD10.3.b
+class UnidadDetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar una unidad, si no la tiene permite crearlo
+    """  
     serializer_class = UnidadDetailSerializer
     queryset = Unidad.objects.all()
 
 
 class IEListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de los instrumentos de evaluacion
+    """     
     serializer_class = UnidadListSerializer
     pagination_class = None
     ordering = 'codigo'
@@ -40,19 +49,25 @@ class IEListViewSet(mixins.ListModelMixin,
     search_fields = ['codigo','nombre', 'descripcion']
     queryset = Unidad.objects.all()
 
-class IEDetailViewSet(mixins.CreateModelMixin,
+#UD10.3.b
+class IEDetailViewSet(deleteMixin_api,
+                        mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         mixins.DestroyModelMixin,
                         viewsets.GenericViewSet):
-    
+    """
+    Si tiene id en la url permite modificar y borrar un instrumento de evaluacion, si no la tiene permite crearlo
+    """     
     serializer_class = IEDetailSerializer
     queryset = InstEvaluacion.objects.all()
 
 
 class PondRAListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de ponderaciones de los resultados de aprendizaje
+    """     
     serializer_class = PondRAListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'resultado_aprendizaje__codigo' 
@@ -61,12 +76,16 @@ class PondRAListViewSet(mixins.ListModelMixin,
     search_fields = ['resultado_aprendizaje__modulo_nombre', 'resultado_aprendizaje_codigo']
     queryset = PondRA.objects.all()
 
-class PondRADetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
-    
+#UD10.3.b
+class PondRADetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar una ponderacion de un resultado de aprendizaje, si no la tiene permite crearlo
+    """     
     serializer_class = PondRADetailSerializer
     queryset = PondRA.objects.all()
     #FALTA HACER VALIDACION UD7 - EJ2 - g
@@ -74,7 +93,9 @@ class PondRADetailViewSet(mixins.CreateModelMixin,
 
 class PondCEListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de ponderaciones de cada criterio de evaluacion
+    """     
     serializer_class = PondCEListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'criterio_evaluacion__codigo' 
@@ -104,19 +125,25 @@ class PondCEListViewSet(mixins.ListModelMixin,
 
         return todos
 
-class PondCEDetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
-    
+#UD10.3.b
+class PondCEDetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar una ponderacion de un criterio de evaluacion, si no la tiene permite crearlo
+    """    
     serializer_class = PondCEDetailSerializer
     queryset = PondCriterio.objects.all()
     #FALTA HACER VALIDACION UD7 - EJ2 - g
 
 class PondCEUDListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de ponderaciones de los criterios de evaluacion por unidad
+    """     
     serializer_class = PondCEUDListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'criterio_evaluacion__codigo' 
@@ -154,13 +181,17 @@ class PondCEUDListViewSet(mixins.ListModelMixin,
             todos = todos.filter(unidad=ud)
 
         return todos
-    
-class PondCEUDDetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
-    
+
+#UD10.3.b  
+class PondCEUDDetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar una ponderacion de un criterio de evaluacion por unidad, si no la tiene permite crearlo
+    """     
     serializer_class = PondCEUDDetailSerializer
     queryset = PondCritUD.objects.all()
     #FALTA HACER VALIDACION UD7 - EJ2 - g

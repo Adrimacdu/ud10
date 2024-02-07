@@ -5,12 +5,18 @@ from rest_framework.exceptions import ValidationError
 from .pagination import LargeResultsSetPagination, StandardResultsSetPagination, ShortResultsSetPagination
 from rest_framework import serializers, response, status
 from rest_framework.decorators import api_view  
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+#UD10.3.b
+from programacion_aula.mixins import deleteMixin_api
 
 #UD10.3.a
 
 class AlumnoListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de alumnos 
+    """ 
     serializer_class = AlumnoListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'nombre' 
@@ -21,17 +27,48 @@ class AlumnoListViewSet(mixins.ListModelMixin,
     search_fields = ['nombre', 'apellidos', 'direccion', 'codigo_postal', 'ciudad']
 
     queryset = Alumno.objects.all()
-class AlumnoDetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
-    
+
+#UD10.3.b
+class AlumnoDetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar un alumno, si no la tiene permite crearlo
+    """     
     serializer_class = AlumnoDetailSerializer
     queryset = Alumno.objects.all()
+
+
+    def ready(self) -> None:
+        from programacion_aula.signals import crear_calificaciones
+
+#UD10.3.c FALTA COMPROBAR
+    #
+    #def create(self, request, *args, **kwargs):
+     #   response = super().create(request, *args, **kwargs)
+     #   if response.status_code == status.HTTP_201_CREATED:
+     #       instance = response.data  # Obtener la instancia creada desde la respuesta
+     #       criterios_evaluacion = CriterioEvalUD.objects.all()
+#
+  #          for criterio in criterios_evaluacion:
+    #            CalificacionUDCE.objects.create(
+     #               alumno=instance,
+      #              unidad=criterio.unidad,
+       #             crit_evaluacion=criterio.criterio_evaluacion,
+        #            calificacion=0
+         #       )
+        #return response*/
+
+
+
 class CEUDListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de criterios de evaluacion por unidad
+    """    
     serializer_class = CEUDListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'unidad__nombre' 
@@ -68,17 +105,25 @@ class CEUDListViewSet(mixins.ListModelMixin,
             todos.filter(criterio_evaluacion__resultado_aprendizaje=ra)
         
         return todos
-class CEUDDetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
     
+#UD10.3.b
+class CEUDDetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar un criterio de evaluacion por unidad, si no la tiene permite crearlo
+    """    
     serializer_class = CEUDDetailSerializer
     queryset = CriterioEvalUD.objects.all()
+
 class CalUDCEListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de calificaciones de los criterios de evaluacion por unidad
+    """    
     serializer_class = CalUDCEListSerializer
     pagination_class = LargeResultsSetPagination
     ordering = 'alumno__nombre' 
@@ -106,7 +151,6 @@ class CalUDCEListViewSet(mixins.ListModelMixin,
         modulo = self.request.query_params.get('modulo')
         ce = self.request.query_params.get('ce')
         ud = self.request.query_params.get('ud')
-
         todos = CalificacionUDCE.objects.all()
 
         if alumno:
@@ -121,17 +165,25 @@ class CalUDCEListViewSet(mixins.ListModelMixin,
             todos.filter(crit_evaluacion__resultado_aprendizaje=ra)
         
         return todos
-class CalUDCEDetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
     
+#UD10.3.b
+class CalUDCEDetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar una calificacion de un criterio de evaluacion por unidad, si no la tiene permite crearlo
+    """     
     serializer_class = CalUDCEDetailSerializer
     queryset = CalificacionUDCE.objects.all()
+
 class CalCEListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de calculos de criterios de evaluacion
+    """    
     serializer_class = CalCEListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'alumno__nombre' 
@@ -169,17 +221,26 @@ class CalCEListViewSet(mixins.ListModelMixin,
             todos.filter(crit_evaluacion=ce)
 
         return todos
-class CalCEDetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
     
+#UD10.3.b
+class CalCEDetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar una califiacion de un criterio de evaluacion, si no la tiene permite crearlo
+    """     
     serializer_class = CalCEDetailSerializer
-    queryset = CalificacionCE.objects.all()    
+    queryset = CalificacionCE.objects.all()  
+
+
 class CalRAListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado de calculos de los resultados de aprendizaje
+    """     
     serializer_class = CalRAListSerializer
     pagination_class = LargeResultsSetPagination
     ordering = 'alumno__nombre' 
@@ -211,17 +272,25 @@ class CalRAListViewSet(mixins.ListModelMixin,
             todos.filter(res_aprendizaje=ra)
 
         return todos
-class CalRADetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
     
+#UD10.3.b
+class CalRADetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar un resultado de aprendizaje, si no la tiene permite crearlo
+    """    
     serializer_class = CalRADetailSerializer
     queryset = CalificacionRA.objects.all()
+
 class CalTotalListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-    
+    """
+    Listado del calculo total
+    """    
     serializer_class = CalTotalListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'alumno__nombre' 
@@ -246,12 +315,17 @@ class CalTotalListViewSet(mixins.ListModelMixin,
             todos.filter(modulo=mod)
 
         return todos
-class CalTotalDetailViewSet(mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
     
+#UD10.3.b
+class CalTotalDetailViewSet(deleteMixin_api,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """
+    Si tiene id en la url permite modificar y borrar un calculo total, si no la tiene permite crearlo
+    """     
     serializer_class = CalTotalDetailSerializer
     queryset = CalificacionTotal.objects.all()
 

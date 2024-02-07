@@ -5,12 +5,16 @@ from rest_framework.exceptions import ValidationError
 from .pagination import LargeResultsSetPagination, StandardResultsSetPagination, ShortResultsSetPagination
 from rest_framework import serializers, response, status
 from rest_framework.decorators import api_view
+#UD10.3.b
+from core.mixins import deleteMixin_api
 
 #UD10.3.a
 
 class ModuloListViewSet(mixins.ListModelMixin,
                         viewsets.GenericViewSet):
-    
+    """
+    Listado de modulos del curso
+    """
     serializer_class = ModuloListSerializer
     pagination_class = None
     ordering = 'codigo'
@@ -18,13 +22,19 @@ class ModuloListViewSet(mixins.ListModelMixin,
     ordering_fields = ['codigo', 'nombre']
     search_fields = ['codigo', 'nombre']
     queryset = Modulo.objects.all()
-    
-class ModuloDetailViewSet(mixins.CreateModelMixin,
+
+#UD10.3.b  
+class ModuloDetailViewSet(deleteMixin_api,
+                        mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         mixins.DestroyModelMixin,
                         viewsets.GenericViewSet):
     
+    """
+    Si tiene id en la url permite modificar y borrar un modulo, si no la tiene permite crearlo
+    """
+
     serializer_class = ModuloDetailSerializer
     queryset = Modulo.objects.all()
 
@@ -33,7 +43,9 @@ class ModuloDetailViewSet(mixins.CreateModelMixin,
 
 class RAListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-
+    """
+    Listado de RAs del curso
+    """
     serializer_class = RAListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'codigo'
@@ -48,12 +60,16 @@ class RAListViewSet(mixins.ListModelMixin,
         
         return ResAprendizaje.objects.all()
 
-class RADetailViewSet(mixins.CreateModelMixin,
+#UD10.3.b
+class RADetailViewSet(deleteMixin_api,
+                        mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         mixins.DestroyModelMixin,
                         viewsets.GenericViewSet):
-    
+    """
+    Si tiene id en la url permite modificar y borrar un resultado de aprendizaje, si no la tiene permite crearlo
+    """    
     serializer_class = RADetailSerializer
     queryset = ResAprendizaje.objects.all()
 
@@ -61,7 +77,9 @@ class RADetailViewSet(mixins.CreateModelMixin,
     
 class CEListViewSet(mixins.ListModelMixin,
                     viewsets.GenericViewSet):
-
+    """
+    Listado de CEs del curso
+    """
     serializer_class = CEListSerializer
     pagination_class = StandardResultsSetPagination
     ordering = 'codigo'
@@ -84,13 +102,17 @@ class CEListViewSet(mixins.ListModelMixin,
         
 
         return todos
-
-class CEDetailViewSet(mixins.CreateModelMixin,
+    
+#UD10.3.b
+class CEDetailViewSet(deleteMixin_api,
+                        mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         mixins.DestroyModelMixin,
                         viewsets.GenericViewSet):
-    
+    """
+    Si tiene id en la url permite modificar y borrar un criterio de evaluacion, si no la tiene permite crearlo
+    """  
     serializer_class = CEDetailSerializer
     queryset = ResAprendizaje.objects.all()
 

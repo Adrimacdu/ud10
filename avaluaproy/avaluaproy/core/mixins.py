@@ -25,3 +25,12 @@ class deleteMixin():
                 except:
                         messages.error(self.request, "Existen dependencias para el objeto {}. Elimine antes dichas dependencias".format(self.object))
                 return HttpResponseRedirect(reverse('home'))
+
+#UD10.3.b
+class deleteMixin_api():
+    def delete(self, request, *args, **kwargs):
+        try:
+                super().delete(request, *args, **kwargs)
+        except:
+            messages.error(request, "No se puede realizar la operación de borrado porque existen dependencias.")
+            return HttpResponseRedirect(reverse('api'))
