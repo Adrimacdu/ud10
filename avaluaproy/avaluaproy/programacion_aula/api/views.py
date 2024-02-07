@@ -46,21 +46,20 @@ class AlumnoDetailViewSet(deleteMixin_api,
         from programacion_aula.signals import crear_calificaciones
 
 #UD10.3.c FALTA COMPROBAR
-    #
-    #def create(self, request, *args, **kwargs):
-     #   response = super().create(request, *args, **kwargs)
-     #   if response.status_code == status.HTTP_201_CREATED:
-     #       instance = response.data  # Obtener la instancia creada desde la respuesta
-     #       criterios_evaluacion = CriterioEvalUD.objects.all()
-#
-  #          for criterio in criterios_evaluacion:
-    #            CalificacionUDCE.objects.create(
-     #               alumno=instance,
-      #              unidad=criterio.unidad,
-       #             crit_evaluacion=criterio.criterio_evaluacion,
-        #            calificacion=0
-         #       )
-        #return response*/
+    
+    def perform_create(self, serializer):
+        alumno = serializer.save()
+        
+        criterios_evaluacion = CriterioEvalUD.objects.all()
+
+        for criterio in criterios_evaluacion:
+            CalificacionUDCE.objects.get_or_create(
+                alumno=alumno,
+                unidad=criterio.unidad,
+                crit_evaluacion=criterio.criterio_evaluacion,
+                calificacion=None
+            )
+
 
 
 

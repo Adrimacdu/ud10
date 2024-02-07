@@ -17,12 +17,18 @@ class CriterioEvalUD(models.Model):
     unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT, null=False)
     criterio_evaluacion = models.ForeignKey(CritEvaluacion, on_delete=models.PROTECT, null=False )
 
+    def __str__(self):
+        return f"{self.unidad} - {self.criterio_evaluacion}"
+
 class CalificacionUDCE(models.Model):
 
     alumno = models.ForeignKey(Alumno, on_delete=models.PROTECT, null=False)
     unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT, null=False)
     crit_evaluacion = models.ForeignKey(CritEvaluacion, on_delete=models.PROTECT, null=False)
     calificacion = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+
+    def __str__(self):
+        return self.alumno + " " + self.unidad + " " + self.crit_evaluacion + " " + self.calificacion
 
 class CalificacionCE(models.Model):
 
